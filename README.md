@@ -30,6 +30,20 @@ Note that this library is compatible **only** with:
 Additionally, check **plugins.hpp** to see how to learn how to
 wrap your Nodes into plugins that can be loaded at run-time.
 
+# Installation
+
+1. Download necessary repositories
+```bash
+~/ros_ws/src$ git clone https://github.com/marco-ambrosio/BehaviorTree.ROS2.git
+~/ros_ws/src$ vcs import < BehaviorTree.ROS2/requirements.repos BehaviorTree.ROS2
+```
+2. Install dependencies with rosdep
+```bash
+~/ros_ws$ sudo apt update && rosdep update
+~/ros_ws$ rosdep install --from-path src --ignore-src -y
+```
+3. Build the workspace
+
 
 ## Acknowledgements
 
