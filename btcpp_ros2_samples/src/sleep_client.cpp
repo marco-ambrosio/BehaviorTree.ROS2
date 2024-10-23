@@ -4,7 +4,7 @@
 
 #include "behaviortree_ros2/plugins.hpp"
 
-#ifndef USE_SLEEP_PLUGIN
+#ifndef USE_PLUGIN
 #include "sleep_action.hpp"
 #endif
 
@@ -76,7 +76,7 @@ int main(int argc, char** argv)
   params.nh = nh;
   params.default_port_value = "sleep_service";
 
-#ifdef USE_SLEEP_PLUGIN
+#ifdef USE_PLUGIN
   RegisterRosNode(factory, "../lib/libsleep_action_plugin.so", params);
 #else
   factory.registerNodeType<SleepAction>("SleepAction", params);
