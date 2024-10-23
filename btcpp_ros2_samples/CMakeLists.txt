@@ -10,12 +10,14 @@ find_package(behaviortree_ros2 REQUIRED)
 find_package(btcpp_ros2_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(nav2_msgs REQUIRED)
 
 set(THIS_PACKAGE_DEPS
     behaviortree_ros2
     std_msgs
     std_srvs
-    btcpp_ros2_interfaces )
+    btcpp_ros2_interfaces
+    nav2_msgs )
 
 ######################################################
 # Simple example showing how to use and customize the BtExecutionServer
@@ -38,9 +40,13 @@ target_compile_definitions(sleep_plugin PRIVATE  BT_PLUGIN_EXPORT )
 ament_target_dependencies(sleep_plugin ${THIS_PACKAGE_DEPS})
 
 add_executable(sleep_client_dyn src/sleep_client.cpp)
-target_compile_definitions(sleep_client_dyn PRIVATE USE_SLEEP_PLUGIN )
+target_compile_definitions(sleep_client_dyn PRIVATE USE_PLUGIN )
 target_link_libraries(sleep_client_dyn sleep_plugin )
 ament_target_dependencies(sleep_client_dyn ${THIS_PACKAGE_DEPS})
+
+add_library(navigate_to_pose_plugin SHARED src/navigate_to_pose_action.cpp)
+target_compile_definitions(navigate_to_pose_plugin PRIVATE  BT_PLUGIN_EXPORT )
+ament_target_dependencies(navigate_to_pose_plugin ${THIS_PACKAGE_DEPS})
 
 ######################################################
 # Build Server
@@ -68,6 +74,7 @@ install(TARGETS
   sleep_client_dyn
   sleep_server
   sleep_plugin
+  navigate_to_pose_plugin
   subscriber_test
   sample_bt_executor
   bool_client
@@ -79,7 +86,7 @@ install(TARGETS
 # INSTALL plugins for other packages to load
 
 install(TARGETS
-  sleep_plugin
+  sleep_plugin navigate_to_pose_plugin
   LIBRARY DESTINATION share/${PROJECT_NAME}/bt_plugins
   ARCHIVE DESTINATION share/${PROJECT_NAME}/bt_plugins
   RUNTIME DESTINATION share/${PROJECT_NAME}/bt_plugins
